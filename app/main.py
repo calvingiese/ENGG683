@@ -1,18 +1,25 @@
-from flask import Flask, redirect, url_for
+from urllib import request
+from flask import Flask, request, render_template, redirect, url_for, session
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
+# Credentials to access app
+user_credentials = {'user1': 'abc', 'user2': '123'}
 
-@app.route("/<name>")
-def showUser(name):
-    return f"Hello {name}!"
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-@app.route("/admin")
-def adminsOnly():
-    return redirect(url_for("home"))
+        if username in user_credentials and password == user_credentials[username]:
+            # Persist session information as needed
+            session["username"] = username
+            return redirect(url_for("search"))
+        else:
+            return render_template("login_error.html")
+
+    return render_template("login.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
