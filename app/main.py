@@ -7,7 +7,7 @@ app = Flask(__name__)
 user_credentials = {'user1': 'abc', 'user2': '123'}
 
 @app.route("/", methods=["GET", "POST"])
-def login():
+def landingPage():
 
     return render_template("landingPage.html")
 # @app.route("/", methods=["GET", "POST"])
